@@ -1,12 +1,30 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './Otp.css'
 import Brand from './Brand'
 const Otp = () => {
     const [number, setNumber] = useState({ 0: "", 1: "", 2: "", 3: "" })
     const [isVerified, setIsVerified] = useState(null);
+    const [inputArr] = useState(Array(4).fill(""))
+    const inputRef = useRef([])
+    const [focus, setFocus] = useState(0)
+    let numberSet = new Set()
+    for (let i = 0; i < 10; i++) {
+        numberSet.add(i.toString())
+    }
+    useEffect(() => {
+        if (inputRef.current[focus]) {
+            inputRef.current[focus].focus()
+        }
+    }, [focus])
+    const handleKeyDown = (e, index) => {
+        if (e.key === 'Backspace') {
+            e.preventDefault()
+            if (number[index] !== "") setNumber({ ...number, [index]: "" })
+            setFocus(Math.max(0, focus - 1))
+        }
+    }
     const handleVerification = () => {
-        console.log("clicked")
-        if (number[0] == "" || number[1] == "" || number[2] == "" || number[3] == "") return alert("Otp not valid.")
+        if (number[0] == "" || number[1] == "" || number[2] == "" || number[3] == "") return alert("otp not valid.")
         let t = '';
         for (let val in number) {
             t += number[val]
@@ -19,7 +37,7 @@ const Otp = () => {
         return
     }
     return (
-        <div>
+        <div id="otp-body">
             <div className='text-4xl font-extrabold text-white flex justify-center p-4 items-center'>Chai aur Code</div>
             <div className='flex justify-center'>
                 <div className='w-[650px] h-[450px] bg-white rounded-lg'>
@@ -35,13 +53,19 @@ const Otp = () => {
                         </div>
                     </div>
                     <div className='flex justify-center p-3 items-center'>
-                        <input type='number' className={`w-[75px] h-[85px] bg-[#DBE2EF] p-2 m-2 text-4xl font-bold text-center rounded-lg border  ${isVerified === null ? 'border-[#112D4E]' : isVerified ? ' border-[#23CF9B]' : 'border-[#EB2D5B]'}`} onChange={(e) => setNumber({ ...number, 0: e.target.value })} />
-                        <input type='number' className={`w-[75px] h-[85px] bg-[#DBE2EF] p-2 m-2 text-4xl font-bold text-center rounded-lg border  ${isVerified === null ? 'border-[#112D4E]' : isVerified ? ' border-[#23CF9B]' : 'border-[#EB2D5B]'}`} onChange={(e) => setNumber({ ...number, 1: e.target.value })} />
-                        <input type='number' className={`w-[75px] h-[85px] bg-[#DBE2EF] p-2 m-2 text-4xl font-bold text-center rounded-lg border  ${isVerified === null ? 'border-[#112D4E]' : isVerified ? ' border-[#23CF9B]' : 'border-[#EB2D5B]'}`} onChange={(e) => setNumber({ ...number, 2: e.target.value })} />
-                        <input type='number' className={`w-[75px] h-[85px] bg-[#DBE2EF] p-2 m-2 text-4xl font-bold text-center rounded-lg border  ${isVerified === null ? 'border-[#112D4E]' : isVerified ? ' border-[#23CF9B]' : 'border-[#EB2D5B]'}`} onChange={(e) => setNumber({ ...number, 3: e.target.value })} />
+                        {inputArr.map((i, index) => (
+                            <div key={index}>
+                                <input ref={(e) => inputRef.current[index] = e} className={`w-[75px] h-[85px] bg-[#DBE2EF] p-2 m-2 text-4xl font-bold text-center rounded-lg border  ${isVerified === null ? 'border-[#112D4E]' : isVerified ? ' border-[#23CF9B]' : 'border-[#EB2D5B]'}`} value={number[index]} onChange={(e) => {
+                                    if (numberSet.has(e.target.value.charAt(e.target.value.length - 1))) {
+                                        setNumber({ ...number, [index]: e.target.value.charAt(e.target.value.length - 1) })
+                                        setFocus(Math.min(focus + 1, 3))
+                                    }
+                                }} onKeyDown={(e) => handleKeyDown(e, index)} />
+                            </div>
+                        ))}
                     </div>
                     <div className='flex justify-center'>
-                        <button disabled={isVerified!==null} className={`w-[350px] h-[55px] ${isVerified === null ? "bg-[#112D4E]" : isVerified === true ? 'bg-[#23CF9B]' : 'bg-[#EB2D5B]'} text-center text-white rounded-lg `} onClick={handleVerification}>
+                        <button type='submit' disabled={isVerified !== null} className={`w-[350px] h-[55px] ${isVerified === null ? "bg-[#112D4E]" : isVerified === true ? 'bg-[#23CF9B]' : 'bg-[#EB2D5B]'} text-center text-white rounded-lg `} onClick={handleVerification}>
                             {isVerified === null ? 'Verify Account' : isVerified === true ? 'Verified' : 'Verification failed'}
                         </button>
                     </div>
@@ -50,7 +74,7 @@ const Otp = () => {
                     </div>
                 </div>
             </div>
-            <Brand/>
+            <Brand />
         </div>
     )
 }
