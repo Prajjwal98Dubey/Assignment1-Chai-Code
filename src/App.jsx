@@ -1,5 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import Otp from "./pages/Otp"
+import Courses from "./pages/Courses"
+import Batches from "./pages/Batches"
 
 function App() {
   return (
@@ -20,5 +22,13 @@ const appRouter = createBrowserRouter([
   {
     path:'/otp-form',
     element:<Otp/>
+  },
+  {
+    path:'/course-list',
+    element:<Courses/>
+  },
+  {
+    path:'/batches',
+    element:<Batches/>
   }
 ])
