@@ -31,7 +31,7 @@ const Batches = () => {
         <div id="batches-body" className='overflow-auto'>
             <div className='text-[#444B79] flex justify-center p-2 items-center font-extrabold text-4xl'>Chai aur Code</div>
             <div className='flex justify-center'>
-                <div className='w-[980px] max-h-max p-5 rounded-lg bg-white'>
+                <div className='w-[980px] max-h-max p-5 rounded-lg bg-white mb-3'>
                     <div className='ml-4 mt-4 font-bold text-2xl text-[#313131]'>Batches</div>
                     <div className='ml-4 mt-1 text-sm text-[#4B4747]'>Create learner&apos;s batch and share information at the same time.</div>
                     <div className='ml-4 mt-2'>
