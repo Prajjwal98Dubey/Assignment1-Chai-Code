@@ -17,7 +17,7 @@ export default App
 const appRouter = createBrowserRouter([
   {
     path:'/',
-    element:<Otp/>
+    element:<Otp/>,
   },
   {
     path:'/otp-form',
