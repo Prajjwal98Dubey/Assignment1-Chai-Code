@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import './Otp.css'
 import Brand from './Brand'
+import NavBar from './NavBar'
 const Otp = () => {
     const [number, setNumber] = useState({ 0: "", 1: "", 2: "", 3: "" })
     const [isVerified, setIsVerified] = useState(null);
@@ -37,6 +38,8 @@ const Otp = () => {
         return
     }
     return (
+        <>
+        <NavBar/>
         <div id="otp-body">
             <div className='text-4xl font-extrabold text-white flex justify-center p-4 items-center'>Chai aur Code</div>
             <div className='flex justify-center'>
@@ -76,6 +79,7 @@ const Otp = () => {
             </div>
             <Brand />
         </div>
+        </>
     )
 }
 export default Otp
